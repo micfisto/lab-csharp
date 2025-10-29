@@ -8,19 +8,33 @@ public class CargoPlane : Plane, ITransoptCargo
     public double WeightCurrentCargo { get; set; }
 
     public CargoPlane
-    (string model, int numberOfCrew, string typeTakeOfAndLanding, double flightRange, double fuelConsumption,
-        int passengerCapacity, double payload, string purpose, bool presenceOfRamp, double weightCurrentCargo) : base(
-        model, numberOfCrew,
-        typeTakeOfAndLanding, flightRange, fuelConsumption, passengerCapacity, payload, purpose)
+    (string model, string typeOfPlane, string purpose, int numberOfCrew, string typeTakeOfAndLanding,
+        double flightRange, double fuelConsumption,
+        int passengerCapacity, double payload, bool presenceOfRamp, double weightCurrentCargo) : base(
+        model, typeOfPlane, purpose, numberOfCrew,
+        typeTakeOfAndLanding, flightRange, fuelConsumption, passengerCapacity, payload)
     {
         PresenceOfRamp = presenceOfRamp;
         WeightCurrentCargo = weightCurrentCargo;
+
+        TypeOfPlane = "грузовой";
+        Purpose = "перевозка грузов";
     }
 
     public override string GetInfo()
     {
         return
-            $"Это грузовой самолёт. Модель: {Model}, грузоподъёмность: {Payload}, дальность полёта: {FlightRange}, наличие рампы: {PresenceOfRamp}.";
+            $"Модель: {Model}\n" +
+            $"Тип: {TypeOfPlane}\n" +
+            $"Назначение: {Purpose}\n" +
+            $"Экипаж: {NumberOfCrew} чел.\n" +
+            $"Тип взлёта и посадки: {TypeTakeOfAndLanding}\n" +
+            $"Дальность полёта: {FlightRange} км\n" +
+            $"Потребление горючего: {FuelConsumption} л/ч\n" +
+            $"Пассажировместимость: {PassengerCapacity} чел.\n" +
+            $"Грузоподъёмность: {Payload} кг\n" +
+            $"Наличие рампы: {(PresenceOfRamp ? "есть" : "отсутствует")}\n" +
+            $"Текущий объём груза на самолёте: {WeightCurrentCargo} кг\n";
     }
 
     public override string ToString()

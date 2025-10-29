@@ -7,17 +7,25 @@ public class AgriculturalPlane : Plane, ISpecialPlane
     public List<string> Equipment { get; private set; }
 
     public AgriculturalPlane
-    (string model, int numberOfCrew, string typeTakeOfAndLanding, double flightRange, double fuelConsumption,
-        int passengerCapacity, double payload, string purpose, string[] equipment) : base(
-        model, numberOfCrew,
-        typeTakeOfAndLanding, flightRange, fuelConsumption, passengerCapacity, payload, purpose)
+    (string model, string typeOfPlane, string purpose, int numberOfCrew, string typeTakeOfAndLanding, double flightRange, double fuelConsumption,
+        int passengerCapacity, double payload,  string[] equipment) : base(
+        model, typeOfPlane, purpose, numberOfCrew,
+        typeTakeOfAndLanding, flightRange, fuelConsumption, passengerCapacity, payload)
     {
         Equipment = new List<string>(equipment);
+
+        TypeOfPlane = "сельскохозяйственный";
+        Purpose = "распыление удобрений и пестицидов, посев, тушение травы";
     }
 
     public override string GetInfo()
     {
-        throw new NotImplementedException();
+       return $"Это сельскохозяйственный самолёт. Модель: {Model}, оснащение: {Equipment}, тип посадки {TypeTakeOfAndLanding}.";
+    }
+
+    public override string ToString()
+    {
+        return GetInfo();
     }
 
     public bool CanLandOnUnpreparedSurface()

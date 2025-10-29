@@ -12,27 +12,40 @@ public class PassengerPlane : Plane, IPassenger
 
     public PassengerPlane
     (
-        string model, int numberOfCrew, string typeTakeOfAndLanding, double flightRange, double fuelConsumption,
-        int passengerCapacity, double payload, string purpose, int numberOfEngines, string[] comfortClass) : base(model,
-        numberOfCrew,
-        typeTakeOfAndLanding, flightRange, fuelConsumption, passengerCapacity, payload, purpose)
+        string model, string typeOfPlane, string purpose, int numberOfCrew, string typeTakeOfAndLanding, double flightRange, double fuelConsumption,
+        int passengerCapacity, double payload, int numberOfEngines, string[] comfortClass) : base(
+        model, typeOfPlane, purpose, numberOfCrew,
+        typeTakeOfAndLanding, flightRange, fuelConsumption, passengerCapacity, payload)
     {
         NumberOfEngines = numberOfEngines;
         ComfortClass = new List<string>(comfortClass);
+
+        TypeOfPlane = "пассажирский";
+        Purpose = "перевозка пассажиров и их багажа";
     }
 
     public override string GetInfo()
     {
         return
-            $"Это пассажирский самолёт. Модель: {Model}, вместимость: {PassengerCapacity}, дальность полёта: {FlightRange}.";
+            $"Модель: {Model}\n" +
+            $"Тип: {TypeOfPlane}\n" +
+            $"Назначение: {Purpose}\n" +
+            $"Экипаж: {NumberOfCrew} чел.\n" +
+            $"Тип взлёта и посадки: {TypeTakeOfAndLanding}\n" +
+            $"Дальность полёта: {FlightRange} км\n" +
+            $"Потребление горючего: {FuelConsumption} л/ч\n" +
+            $"Пассажировместимость: {PassengerCapacity} чел.\n" +
+            $"Грузоподъёмность: {Payload} кг\n" +
+            $"Количество двигателей: {NumberOfEngines}\n" +
+            $"Категория: {PlaneCategory()}\n" +
+            $"Классы комфорта: \n";
     }
-
     public override string ToString()
     {
         return GetInfo();
     }
 
-    public string TypoOfPlane()
+    public string PlaneCategory()
     {
         if (NumberOfEngines <= 2 && FlightRange < 3000)
             return "региональный";
