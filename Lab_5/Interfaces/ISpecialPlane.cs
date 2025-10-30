@@ -2,8 +2,8 @@ namespace Lab_5.Interfaces;
 
 public interface ISpecialPlane
 {
-    bool CanLandOnUnpreparedSurface();
-    void SpecialEquipment();
+    string CanLandOnUnpreparedSurface();
+    string SpecialEquipment();
     void AddSpecialEquipment();
     void RemoveSpecialEquipment();
 }
