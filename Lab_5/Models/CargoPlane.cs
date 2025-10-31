@@ -8,17 +8,13 @@ public class CargoPlane : Plane, ITransoptCargo
     public double WeightCurrentCargo { get; set; }
 
     public CargoPlane
-    (string model, string typeOfPlane, string purpose, int numberOfCrew, string typeTakeOfAndLanding,
-        double flightRange, double fuelConsumption,
-        int passengerCapacity, double payload, bool presenceOfRamp, double weightCurrentCargo) : base(
-        model, typeOfPlane, purpose, numberOfCrew,
-        typeTakeOfAndLanding, flightRange, fuelConsumption, passengerCapacity, payload)
+    (string model, int numberOfCrew,
+        double flightRange, double fuelConsumption, double payload, bool presenceOfRamp) : base(
+        model, typeOfPlane: "грузовой", purpose: "перевозка грузов", numberOfCrew: numberOfCrew, flightRange: flightRange, fuelConsumption: fuelConsumption,
+        passengerCapacity: 0, payload: payload)
     {
         PresenceOfRamp = presenceOfRamp;
-        WeightCurrentCargo = weightCurrentCargo;
-
-        TypeOfPlane = "грузовой";
-        Purpose = "перевозка грузов";
+        WeightCurrentCargo = 0;
     }
 
     public override string GetInfo()
@@ -28,7 +24,6 @@ public class CargoPlane : Plane, ITransoptCargo
             $"Тип: {TypeOfPlane}\n" +
             $"Назначение: {Purpose}\n" +
             $"Экипаж: {NumberOfCrew} чел.\n" +
-            $"Тип взлёта и посадки: {TypeTakeOfAndLanding}\n" +
             $"Дальность полёта: {FlightRange} км\n" +
             $"Потребление горючего: {FuelConsumption} л/ч\n" +
             $"Пассажировместимость: {PassengerCapacity} чел.\n" +
@@ -42,6 +37,11 @@ public class CargoPlane : Plane, ITransoptCargo
         return GetInfo();
     }
 
+    public void IsPresenceOfRamp(bool presenceOfRamp)
+    {
+        Console.WriteLine(PresenceOfRamp ? "У данной модели есть рампа." : "Рампа на данной модели отсутствует.");
+    }
+
     public void LoadCargo(double loadWeightCargo)
     {
         if (loadWeightCargo + WeightCurrentCargo > Payload)
@@ -53,11 +53,6 @@ public class CargoPlane : Plane, ITransoptCargo
 
         WeightCurrentCargo += loadWeightCargo;
         Console.WriteLine($"Груз успешно загружен. Сейчас на борту {WeightCurrentCargo} кг.");
-    }
-
-    public void IsPresenceOfRamp(bool presenceOfRamp)
-    {
-        Console.WriteLine(PresenceOfRamp ? "У данной модели есть рампа." : "Рампа на данной модели отсутствует.");
     }
 
     public void UnloadCargo()
