@@ -14,9 +14,6 @@ public abstract class Plane
     //количество членов экипажа
     public int NumberOfCrew { get; set; }
 
-    //тип взлёта и посадки
-    public string TypeTakeOfAndLanding { get; set; }
-
     //дальность полёта
     public double FlightRange { get; set; }
 
@@ -29,21 +26,18 @@ public abstract class Plane
     //грузоподъёмность
     public double Payload { get; set; }
 
-    protected Plane(string model, string typeOfPlane, string purpose, int numberOfCrew, string typeTakeOfAndLanding,
+    protected Plane(string model, string typeOfPlane, string purpose, int numberOfCrew,
         double flightRange, double fuelConsumption, int passengerCapacity, double payload)
     {
         Model = model;
         TypeOfPlane = typeOfPlane;
         Purpose = purpose;
         NumberOfCrew = numberOfCrew;
-        TypeTakeOfAndLanding = typeTakeOfAndLanding;
         FlightRange = flightRange;
         FuelConsumption = fuelConsumption;
         PassengerCapacity = passengerCapacity;
         Payload = payload;
-        Purpose = purpose;
     }
-
     public abstract string GetInfo();
 
     public override string ToString()
