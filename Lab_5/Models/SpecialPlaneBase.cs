@@ -4,8 +4,16 @@ namespace Lab_5.Models;
 
 public abstract class SpecialPlaneBase : Plane, ISpecialPlane
 {
-    protected List<string> Equipment = new();
-    protected string TypeTakeOfAndLanding;
+    protected List<string> Equipment;
+    protected string TypeTakeOfAndLanding { get; set; }
+
+    public static readonly Dictionary<int, string> TakeOffTypes = new()
+    {
+        { 1, "stol" },
+        { 2, "vtol" },
+        { 3, "обычные(наземные)" },
+        { 4, "другой" }
+    };
 
     public SpecialPlaneBase(string model, string typeOfPlane, string purpose, int numberOfCrew,
         string typeTakeOfAndLanding, double flightRange, double fuelConsumption, int passengerCapacity,
