@@ -35,7 +35,7 @@ public class PlaneHandler
                 fuelConsumption: 5000,
                 payload: 20000,
                 presenceOfRamp: true
-                ),
+            ),
             new CargoPlane(
                 model: "An-124 Ruslan",
                 numberOfCrew: 5,
@@ -84,88 +84,26 @@ public class PlaneHandler
         };
     }
 
-    public static PassengerPlane CreatePessengerPlane()
+    public static PassengerPlane CreatePassengerPlaneFromConsole()
     {
-        Console.WriteLine("=====СОЗДАНИЕ ПАССАЖИРСКОГО САМОЛЁТА=====");
+        Console.WriteLine("===== СОЗДАНИЕ ПАССАЖИРСКОГО САМОЛЁТА =====");
 
-        string? model;
-        while (true)
-        {
-            Console.WriteLine("Введите модель самолёта:");
-            model = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(model))
-                break;
-            Console.WriteLine("Ошибка: поле \"модель\" не может быть пустым.");
-        }
+        string model = ReadString("Введите модель самолёта", "\"модель\"");
+        int numberOfCrew = ReadInt("Введите количество членов экипажа",
+            "данные о количестве членов экипажа", 2, 18);
+        double flightRange = ReadDouble("Введите дальность полёта в км",
+            "данные о дальности полёта.", 100, 15000);
+        double fuelConsumption = ReadDouble("Введите расход топлива л/ч",
+            "данные о расходе топлива", 200, 8000);
+        int passengerCapacity = ReadInt("Введите пассажировместимость",
+            "данные о количестве посадочных мест", 2, 850);
+        double payload = ReadDouble("Введите грузоподъёмность", "данные о грузоподъёмности", 100, 200000);
+        int numberOfEngines = ReadInt("Введите количество двигателей", "данные о количестве двигателей", 1, 4);
+        string[] comfortClass = ReadStringArray(
+            "Введите классы обслуживания через запятую(эконом,комфорт,бизнес):",
+            "\"класс обслуживания\"");
 
-        int numberOfCrew;
-        while (true)
-        {
-            Console.WriteLine("Введите количество членов экипажа(2-18):");
-            if (int.TryParse(Console.ReadLine(), out numberOfCrew) && numberOfCrew is >= 2 and <= 18)
-                break;
-            Console.WriteLine("Ошибка: количество членов экипажа должно быть в диапазоне от 2 до 18.");
-        }
-
-        double flightRange;
-        while (true)
-        {
-            Console.WriteLine("Введите дальность полёта в км (100-15000):");
-            if (double.TryParse(Console.ReadLine(), out flightRange) && flightRange is >= 100 and <= 15000)
-                break;
-            Console.WriteLine("Ошибка: введите данные о дальности полёта в корректных значениях.");
-        }
-
-        double fuelConsumption;
-        while (true)
-        {
-            Console.WriteLine("Введите расход топлива л/ч (200-8000):");
-            if (double.TryParse(Console.ReadLine(), out fuelConsumption) && fuelConsumption is >= 200 and <= 8000)
-                break;
-            Console.WriteLine("Ошибка: введите данные о расходе топлива в корректных значениях.");
-        }
-
-        int passengerCapacity;
-        while (true)
-        {
-            Console.WriteLine("Введите пассажировместимость (2-850):");
-            if (int.TryParse(Console.ReadLine(), out passengerCapacity) && passengerCapacity is >= 2 and <= 850)
-                break;
-            Console.WriteLine("Ошибка: количество посадочных мест должно быть в диапазоне от 2 до 850.");
-        }
-
-        double payload;
-        while (true)
-        {
-            Console.WriteLine("Введите грузоподъёмность (100-200000):");
-            if (double.TryParse(Console.ReadLine(), out payload) && payload is >= 100 and <= 200000)
-                break;
-            Console.WriteLine("Ошибка: введите данные о грузоподъёмности в корректных значениях.");
-        }
-
-        int numberOfEngines;
-        while (true)
-        {
-            Console.WriteLine("Введите количество двигателей (1-4):");
-            if (int.TryParse(Console.ReadLine(), out numberOfEngines) && numberOfEngines is >= 1 and <= 4)
-                break;
-            Console.WriteLine("Ошибка: количество двигателей должно быть в диапазоне от 2 до 18.");
-        }
-
-        string? comfortClassInput;
-        while (true)
-        {
-            Console.WriteLine("Введите классы обслуживания через запятую(эконом,комфорт,бизнес):");
-            comfortClassInput = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(comfortClassInput))
-                break;
-            Console.WriteLine("Ошибка: поле \"класс обслуживания\" не может быть пустым.");
-        }
-
-        string[] comfortClass = comfortClassInput.Split(",", StringSplitOptions.RemoveEmptyEntries)
-            .Select(str => str.Trim()).ToArray();
-
-        PassengerPlane plane = new PassengerPlane(
+        PassengerPlane plane = PlaneFactory.CreatePassengerPlane(
             model,
             numberOfCrew,
             flightRange,
@@ -179,167 +117,47 @@ public class PlaneHandler
         return plane;
     }
 
-    public static CargoPlane CreateCargoPlane()
+    public static CargoPlane CreateCargoPlaneFromConsole()
     {
-        Console.WriteLine("=====СОЗДАНИЕ ГРУЗОВОГО САМОЛЁТА=====");
+        Console.WriteLine("===== СОЗДАНИЕ ГРУЗОВОГО САМОЛЁТА =====");
 
-        string? model;
-        while (true)
-        {
-            Console.WriteLine("Введите модель самолёта:");
-            model = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(model))
-                break;
-            Console.WriteLine("Ошибка: поле \"модель\" не может быть пустым.");
-        }
+        string model = ReadString("Введите модель самолёта", "\"модель\"");
+        int numberOfCrew = ReadInt("Введите количество членов экипажа",
+            "данные о количестве членов экипажа", 2, 10);
+        double flightRange = ReadDouble("Введите дальность полёта в км",
+            "данные о дальности полёта.", 300, 12000);
+        double fuelConsumption = ReadDouble("Введите расход топлива л/ч",
+            "данные о расходе топлива", 500, 10000);
+        double payload = ReadDouble("Введите грузоподъёмность", "данные о грузоподъёмности", 1000, 150000);
+        bool presenceOfRamp = ReadBool("Имеет ли данная модель рампу (да/нет)?");
+        double weightCurrentCargo = ReadDouble("Введите вес груза, который сейчас имеется на данном самолёте",
+            "данные о текущем весе груза на самолёте", 0, payload);
 
-        int numberOfCrew;
-        while (true)
-        {
-            Console.WriteLine("Введите количество членов экипажа(2-10):");
-            if (int.TryParse(Console.ReadLine(), out numberOfCrew) && numberOfCrew is >= 2 and <= 10)
-                break;
-            Console.WriteLine("Ошибка: количество членов экипажа должно быть в диапазоне от 2 до 10.");
-        }
-
-        double flightRange;
-        while (true)
-        {
-            Console.WriteLine("Введите дальность полёта в км (300-12000):");
-            if (double.TryParse(Console.ReadLine(), out flightRange) && flightRange is >= 300 and <= 12000)
-                break;
-            Console.WriteLine("Ошибка: введите данные о дальности полёта в корректных значениях.");
-        }
-
-        double fuelConsumption;
-        while (true)
-        {
-            Console.WriteLine("Введите расход топлива л/ч (500-10000):");
-            if (double.TryParse(Console.ReadLine(), out fuelConsumption) && fuelConsumption is >= 500 and <= 10000)
-                break;
-            Console.WriteLine("Ошибка: введите данные о расходе топлива в корректных значениях.");
-        }
-
-        double payload;
-        while (true)
-        {
-            Console.WriteLine("Введите грузоподъёмность (1000-150000):");
-            if (double.TryParse(Console.ReadLine(), out payload) && payload is >= 1000 and <= 150000)
-                break;
-            Console.WriteLine("Ошибка: введите данные о грузоподъёмности в корректных значениях.");
-        }
-
-        bool presenceOfRamp;
-        while (true)
-        {
-            Console.WriteLine("Имеет ли данная модель рампу (да/нет)?");
-            string choice = Console.ReadLine()?.Trim().ToLower() ?? "";
-            if (choice == "да" || choice == "д" || choice == "yes")
-            {
-                presenceOfRamp = true;
-                break;
-            }
-
-            if (choice == "нет" || choice == "н" || choice == "no")
-            {
-                presenceOfRamp = false;
-                break;
-            }
-
-            Console.WriteLine("Ошибка: требуется ввести \"да\" или \"нет\".");
-        }
-
-        double weightCurrentCargo;
-        while (true)
-        {
-            Console.WriteLine($"Введите вес груза, который сейчас имеется на данном самолёте (0-{payload}):");
-            if (double.TryParse(Console.ReadLine(), out weightCurrentCargo) && weightCurrentCargo >= 0 &&
-                weightCurrentCargo <= payload)
-            {
-                Console.WriteLine("Значение текущего груза успешно добавлено.");
-                break;
-            }
-
-            Console.WriteLine($"Значение текущего груза не должно превышать {payload}.");
-        }
-
-        CargoPlane plane = new CargoPlane(
-            model,
-            numberOfCrew,
-            flightRange,
-            fuelConsumption,
-            payload,
-            presenceOfRamp)
-        {
-            WeightCurrentCargo = weightCurrentCargo
-        };
+        CargoPlane plane = PlaneFactory.CreateCargoPlane(model, numberOfCrew, flightRange, fuelConsumption, payload,
+            presenceOfRamp,
+            weightCurrentCargo);
 
         Console.WriteLine($"Грузовой самолёт {plane.Model} успешно создан и добавлен в базу авиакомпании.");
         return plane;
     }
 
-    public static AmbulancePlane CreateAmbulancePlane()
+    public static AmbulancePlane CreateAmbulancePlaneFromConsole()
     {
-        Console.WriteLine("=====СОЗДАНИЕ САНИТАРНОГО САМОЛЁТА=====");
+        Console.WriteLine("===== СОЗДАНИЕ САНИТАРНОГО САМОЛЁТА =====");
 
-        string? model;
-        while (true)
-        {
-            Console.WriteLine("Введите модель самолёта:");
-            model = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(model))
-                break;
-            Console.WriteLine("Ошибка: поле \"модель\" не может быть пустым.");
-        }
-
-        int numberOfCrew;
-        while (true)
-        {
-            Console.WriteLine("Введите количество членов экипажа(2-5):");
-            if (int.TryParse(Console.ReadLine(), out numberOfCrew) && numberOfCrew is >= 2 and <= 5)
-                break;
-            Console.WriteLine("Ошибка: количество членов экипажа должно быть в диапазоне от 2 до 5.");
-        }
-
+        string model = ReadString("Введите модель самолёта", "\"модель\"");
+        int numberOfCrew = ReadInt("Введите количество членов экипажа",
+            "данные о количестве членов экипажа", 2, 5);
         string typeTakeOfAndLanding = IsTypeTakeOfAndLanding();
+        double flightRange = ReadDouble("Введите дальность полёта в км",
+            "данные о дальности полёта.", 500, 5000);
+        double fuelConsumption = ReadDouble("Введите расход топлива л/ч",
+            "данные о расходе топлива", 300, 2000);
+        int passengerCapacity = ReadInt("Введите пассажировместимость",
+            "данные о количестве посадочных мест", 1, 12);
+        double payload = ReadDouble("Введите грузоподъёмность", "данные о грузоподъёмности", 500, 5000);
 
-        double flightRange;
-        while (true)
-        {
-            Console.WriteLine("Введите дальность полёта в км (500-5000):");
-            if (double.TryParse(Console.ReadLine(), out flightRange) && flightRange is >= 500 and <= 5000)
-                break;
-            Console.WriteLine("Ошибка: введите данные о дальности полёта в корректных значениях.");
-        }
-
-        double fuelConsumption;
-        while (true)
-        {
-            Console.WriteLine("Введите расход топлива л/ч (300-2000):");
-            if (double.TryParse(Console.ReadLine(), out fuelConsumption) && fuelConsumption is >= 300 and <= 2000)
-                break;
-            Console.WriteLine("Ошибка: введите данные о расходе топлива в корректных значениях.");
-        }
-
-        int passengerCapacity;
-        while (true)
-        {
-            Console.WriteLine("Введите пассажировместимость (1-12):");
-            if (int.TryParse(Console.ReadLine(), out passengerCapacity) && passengerCapacity is >= 1 and <= 12)
-                break;
-            Console.WriteLine("Ошибка: количество посадочных мест должно быть в диапазоне от 1 до 12.");
-        }
-
-        double payload;
-        while (true)
-        {
-            Console.WriteLine("Введите грузоподъёмность (500-5000):");
-            if (double.TryParse(Console.ReadLine(), out payload) && payload is >= 500 and <= 5000)
-                break;
-            Console.WriteLine("Ошибка: введите данные о грузоподъёмности в корректных значениях.");
-        }
-
-        AmbulancePlane plane = new AmbulancePlane(
+        AmbulancePlane plane = PlaneFactory.CreateAmbulancePlane(
             model,
             numberOfCrew,
             typeTakeOfAndLanding,
@@ -353,59 +171,22 @@ public class PlaneHandler
         return plane;
     }
 
-    public static AgriculturalPlane CreateAgriculturalPlane()
+    public static AgriculturalPlane CreateAgriculturalPlaneFromConsole()
     {
-        Console.WriteLine("=====СОЗДАНИЕ СЕЛЬСКОХОЗЯЙСТВЕННОГО САМОЛЁТА=====");
+        Console.WriteLine("===== СОЗДАНИЕ СЕЛЬСКОХОЗЯЙСТВЕННОГО САМОЛЁТА =====");
 
-        string? model;
-        while (true)
-        {
-            Console.WriteLine("Введите модель самолёта:");
-            model = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(model))
-                break;
-            Console.WriteLine("Ошибка: поле \"модель\" не может быть пустым.");
-        }
-
-        int numberOfCrew;
-        while (true)
-        {
-            Console.WriteLine("Введите количество членов экипажа(1-2):");
-            if (int.TryParse(Console.ReadLine(), out numberOfCrew) && numberOfCrew is >= 1 and <= 2)
-                break;
-            Console.WriteLine("Ошибка: количество членов экипажа должно быть в диапазоне от 1 до 2.");
-        }
-
+        string model = ReadString("Введите модель самолёта", "\"модель\"");
+        int numberOfCrew = ReadInt("Введите количество членов экипажа",
+            "данные о количестве членов экипажа", 2, 5);
         string typeTakeOfAndLanding = IsTypeTakeOfAndLanding();
+        double flightRange = ReadDouble("Введите дальность полёта в км",
+            "данные о дальности полёта.", 500, 5000);
+        double fuelConsumption = ReadDouble("Введите расход топлива л/ч",
+            "данные о расходе топлива", 300, 2000);
+        double payload = ReadDouble("Введите грузоподъёмность", "данные о грузоподъёмности", 500, 5000);
 
-        double flightRange;
-        while (true)
-        {
-            Console.WriteLine("Введите дальность полёта в км (200-1200):");
-            if (double.TryParse(Console.ReadLine(), out flightRange) && flightRange is >= 200 and <= 1200)
-                break;
-            Console.WriteLine("Ошибка: введите данные о дальности полёта в корректных значениях.");
-        }
 
-        double fuelConsumption;
-        while (true)
-        {
-            Console.WriteLine("Введите расход топлива л/ч (150-800):");
-            if (double.TryParse(Console.ReadLine(), out fuelConsumption) && fuelConsumption is >= 150 and <= 800)
-                break;
-            Console.WriteLine("Ошибка: введите данные о расходе топлива в корректных значениях.");
-        }
-
-        double payload;
-        while (true)
-        {
-            Console.WriteLine("Введите грузоподъёмность (500-5000):");
-            if (double.TryParse(Console.ReadLine(), out payload) && payload is >= 500 and <= 5000)
-                break;
-            Console.WriteLine("Ошибка: введите данные о грузоподъёмности в корректных значениях.");
-        }
-
-        AgriculturalPlane plane = new AgriculturalPlane(
+        AgriculturalPlane plane = PlaneFactory.CreateAgriculturalPlane(
             model,
             numberOfCrew,
             typeTakeOfAndLanding,
@@ -418,32 +199,95 @@ public class PlaneHandler
         return plane;
     }
 
-    public static string IsTypeTakeOfAndLanding()
+    static string IsTypeTakeOfAndLanding()
     {
         while (true)
         {
             Console.WriteLine("Выберите тип взлёта и посадки:");
-            Console.WriteLine("1.vtol");
-            Console.WriteLine("2.stol");
-            Console.WriteLine("3.обычные(наземные)");
-            Console.WriteLine("4.другой");
-            if (int.TryParse(Console.ReadLine(), out int choice))
+            foreach (var type in SpecialPlaneBase.TakeOffTypes)
+                Console.WriteLine($"{type.Key}. {type.Value}");
+
+            if (int.TryParse(Console.ReadLine(), out int choice)&&SpecialPlaneBase.TakeOffTypes.TryGetValue(choice, out var typeTakeOfAndLanding))
             {
-                switch (choice)
-                {
-                    case 1:
-                        return "vtol";
-                    case 2:
-                        return "stol";
-                    case 3:
-                        return "обычные(наземные)";
-                    case 4:
-                        return "другой";
-                    default:
-                        Console.WriteLine("Некорректный ввод. Введите число.");
-                        continue;
-                }
+                return typeTakeOfAndLanding;
             }
+            
+            Console.WriteLine("Ошибка: введите целое число от 1 до 4.");
         }
     }
-}
+
+    public static string ReadString(string prompt, string errorMessage)
+        {
+            while (true)
+            {
+                Console.WriteLine($"{prompt}:");
+                string? input = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(input))
+                    return input;
+                Console.WriteLine($"Ошибка: поле {errorMessage} не может быть пустым.");
+            }
+        }
+
+        public static string[] ReadStringArray(string prompt, string errorMessage)
+        {
+            while (true)
+            {
+                Console.WriteLine($"{prompt}:");
+                string? input = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(input))
+                    return input.Split(",", StringSplitOptions.RemoveEmptyEntries)
+                        .Select(str => str.Trim()).ToArray();
+                Console.WriteLine($"Ошибка: поле {errorMessage} не может быть пустым.");
+            }
+        }
+
+        public static int ReadInt(string prompt, string errorMessage, int min, int max)
+        {
+            while (true)
+            {
+                Console.WriteLine($"{prompt} в диапазоне от {min} до {max}:");
+                if (int.TryParse(Console.ReadLine(), out int value) && value >= min && value <= max)
+                    return value;
+                Console.WriteLine(
+                    $"Ошибка: неверный ввод. Введите {errorMessage} в диапазоне от {min} до {max}.");
+            }
+        }
+
+        public static double ReadDouble(string prompt, string errorMessage, double min, double max)
+        {
+            while (true)
+            {
+                Console.WriteLine($"{prompt} в диапазоне от {min} до {max}:");
+                if (double.TryParse(Console.ReadLine(), out double value) && value >= min && value <= max)
+                    return value;
+                Console.WriteLine(
+                    $"Ошибка: неверный ввод. Введите {errorMessage} в диапазоне от {min} до {max}.");
+            }
+        }
+
+        public static bool ReadBool(string prompt)
+        {
+            bool value;
+
+            while (true)
+            {
+                Console.WriteLine($"{prompt}");
+                string choice = Console.ReadLine()?.Trim().ToLower() ?? "";
+                if (choice == "да" || choice == "д" || choice == "yes")
+                {
+                    value = true;
+                    break;
+                }
+
+                if (choice == "нет" || choice == "н" || choice == "no")
+                {
+                    value = false;
+                    break;
+                }
+
+                Console.WriteLine("Ошибка: требуется ввести \"да\" или \"нет\".");
+            }
+
+            return value;
+        }
+    }
