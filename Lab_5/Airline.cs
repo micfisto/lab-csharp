@@ -9,7 +9,32 @@ public class Airline
 
     public void AddPlane(Plane plane)
     {
+        Console.WriteLine("Выберите тип самолёта:");
+        Console.WriteLine("1. пассажирский");
+        Console.WriteLine("2. грузовой");
+        Console.WriteLine("3. санитарный");
+        Console.WriteLine("4. сельскохозяйственный");
+
+        while (true)
+        {
+            if (int.TryParse(Console.ReadLine(), out int choice))
+            {
+                switch (choice)
+                {
+                    case 1:
+                        plane = PlaneHandler.CreatePessengerPlane();
+                        break;
+                    case 2:
+                        plane = PlaneHandler.CreateCargoPlane();
+                        break;
+                }
+            }
+            else
+                Console.WriteLine("Некорректный ввод. Введите число из списка.");
+        }
+
         planes.Add(plane);
+        Console.WriteLine($"Самолёт {plane.Model} добавлен в базу авиакомпании.");
     }
 
     public void RemovePlane(string model)

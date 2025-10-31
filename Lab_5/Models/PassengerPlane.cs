@@ -4,24 +4,18 @@ namespace Lab_5.Models;
 
 public class PassengerPlane : Plane, IPassenger
 {
-    //количество двигателей(1-2 для региональных, 2-4 у лайнеров)
     public int NumberOfEngines { get; private set; }
-
-    //класс комфорта в самолёте
     public List<string> ComfortClass { get; private set; }
 
     public PassengerPlane
     (
-        string model, string typeOfPlane, string purpose, int numberOfCrew, string typeTakeOfAndLanding, double flightRange, double fuelConsumption,
+        string model, int numberOfCrew,
+        double flightRange, double fuelConsumption,
         int passengerCapacity, double payload, int numberOfEngines, string[] comfortClass) : base(
-        model, typeOfPlane, purpose, numberOfCrew,
-        typeTakeOfAndLanding, flightRange, fuelConsumption, passengerCapacity, payload)
+        model, typeOfPlane: "пассажирский", purpose: "перевозка пассажиров и их багажа", numberOfCrew: numberOfCrew,flightRange: flightRange, fuelConsumption: fuelConsumption, passengerCapacity: passengerCapacity, payload: payload)
     {
         NumberOfEngines = numberOfEngines;
         ComfortClass = new List<string>(comfortClass);
-
-        TypeOfPlane = "пассажирский";
-        Purpose = "перевозка пассажиров и их багажа";
     }
 
     public override string GetInfo()
@@ -31,15 +25,15 @@ public class PassengerPlane : Plane, IPassenger
             $"Тип: {TypeOfPlane}\n" +
             $"Назначение: {Purpose}\n" +
             $"Экипаж: {NumberOfCrew} чел.\n" +
-            $"Тип взлёта и посадки: {TypeTakeOfAndLanding}\n" +
             $"Дальность полёта: {FlightRange} км\n" +
             $"Потребление горючего: {FuelConsumption} л/ч\n" +
             $"Пассажировместимость: {PassengerCapacity} чел.\n" +
             $"Грузоподъёмность: {Payload} кг\n" +
             $"Количество двигателей: {NumberOfEngines}\n" +
             $"Категория: {PlaneCategory()}\n" +
-            $"Классы комфорта: \n";
+            $"Классы обслуживания: {string.Join(", ", ComfortClass)}\n";
     }
+
     public override string ToString()
     {
         return GetInfo();
@@ -54,8 +48,39 @@ public class PassengerPlane : Plane, IPassenger
         return "промежуточный тип";
     }
 
-    public void ShowComfortClasses()
+    public void AddComfortClasses()
     {
-        Console.WriteLine($"Классы комфорта в данном самолёте: {string.Join(", ", ComfortClass)}.");
+        Console.WriteLine("Введите название класса обслуживания(эконом, комфорт, бизнес):");
+        string? addComfortClass = Console.ReadLine();
+        if (addComfortClass != null)
+        {
+            ComfortClass.Add(addComfortClass);
+        }
+
+        Console.WriteLine(
+            $"Обновлено.\nСписок доступных классов обслуживания в данном самолёте: {string.Join(", ", ComfortClass)}");
+    }
+
+    public void RemoveComfortClass()
+    {
+        Console.WriteLine("Введите название класса для удаления: ");
+        string? removeComfortClass = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(removeComfortClass))
+        {
+            removeComfortClass = removeComfortClass.ToLower();
+            string? found = ComfortClass.Find(comfortClass => comfortClass.ToLower() == removeComfortClass);
+            if (found != null)
+            {
+                ComfortClass.Remove(found);
+                Console.WriteLine(
+                    $"Обновлено.\nСписок доступных классов обслуживания в данном самолёте: {string.Join(", ", ComfortClass)}\"");
+            }
+            else
+            {
+                Console.WriteLine("Данного класса нет в списке доступных классов обслуживания на данном самолёте.");
+            }
+        }
+        else
+            Console.WriteLine("Некорректный ввод.");
     }
 }
