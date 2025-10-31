@@ -4,5 +4,7 @@ public interface IPassenger
 {
     public string PlaneCategory();
 
-    void ShowComfortClasses();
+    void AddComfortClasses();
+
+    void RemoveComfortClass();
 }
