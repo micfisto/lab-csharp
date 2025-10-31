@@ -4,12 +4,17 @@ namespace Lab_5.Models;
 
 public abstract class SpecialPlaneBase : Plane, ISpecialPlane
 {
-    protected List<string> Equipment = new ();
-    
-    
-    public SpecialPlaneBase(string model, string typeOfPlane, string purpose, int numberOfCrew, string typeTakeOfAndLanding, double flightRange, double fuelConsumption, int passengerCapacity, double payload) : base(model, typeOfPlane, purpose, numberOfCrew, typeTakeOfAndLanding, flightRange, fuelConsumption, passengerCapacity, payload)
+    protected List<string> Equipment = new();
+    protected string TypeTakeOfAndLanding;
+
+    public SpecialPlaneBase(string model, string typeOfPlane, string purpose, int numberOfCrew,
+        string typeTakeOfAndLanding, double flightRange, double fuelConsumption, int passengerCapacity,
+        double payload) : base(model, typeOfPlane, purpose, numberOfCrew,
+        flightRange,
+        fuelConsumption, passengerCapacity, payload)
     {
-        
+        TypeTakeOfAndLanding = typeTakeOfAndLanding;
+        Equipment = new List<string>();
     }
 
     public override string GetInfo()
@@ -27,7 +32,7 @@ public abstract class SpecialPlaneBase : Plane, ISpecialPlane
             $"Грузоподъёмность: {Payload} кг\n" +
             $"Оборудование: {string.Join(", ", Equipment)}";
     }
-    
+
     public virtual string CanLandOnUnpreparedSurface()
     {
         switch (TypeTakeOfAndLanding)
@@ -35,7 +40,8 @@ public abstract class SpecialPlaneBase : Plane, ISpecialPlane
             case "vtol":
                 return "может. Модель способна взлетать и садиться вертикально.";
             case "stol":
-                return "может. Модель требует минимальную длину взлётно-посадочной полосы и способна сесть на грунтовое покрытие.";
+                return
+                    "может. Модель требует минимальную длину взлётно-посадочной полосы и способна сесть на грунтовое покрытие.";
             case "обычные(наземные)":
                 return "не может. Модель типа взлетает и садится только на аэродроме";
             default:
@@ -65,6 +71,7 @@ public abstract class SpecialPlaneBase : Plane, ISpecialPlane
                 Console.WriteLine("Такое оборудование уже установлено.");
                 return;
             }
+
             Equipment.Add(newEquipment);
             Console.WriteLine($"Новое оборудование {newEquipment} добавлено.");
             Console.WriteLine($"Полный перечень оборудования на самолёте: {string.Join(", ", Equipment)}.");
