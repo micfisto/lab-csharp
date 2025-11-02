@@ -40,6 +40,8 @@ public abstract class Plane
     }
     public abstract string GetInfo();
 
+    public abstract void EditInfo();
+
     public override string ToString()
     {
         return GetInfo();
