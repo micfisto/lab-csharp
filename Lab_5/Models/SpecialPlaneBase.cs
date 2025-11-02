@@ -98,7 +98,24 @@ public abstract class SpecialPlaneBase : Plane, ISpecialPlane
             return;
         }
 
-        Equipment.Clear();
-        Console.WriteLine("Было удалено всё оборудование.");
+        Console.WriteLine("1. Удалить всё оборудование.");
+        Console.WriteLine("2. Удалить позицию по номеру.");
+        int choice = PlaneHandler.ReadInt("Введите число", "число", 0, 2);
+        switch (choice)
+        {
+            case 1:
+                Equipment.Clear();
+                Console.WriteLine("Было удалено всё оборудование.");
+                break;
+            case 2:
+                Console.WriteLine("Текущий список оборудования на самолёте:");
+                for (int i = 0; i < Equipment.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {Equipment[i]}");
+                }
+                int index = PlaneHandler.ReadInt("Введите номер позиции для удаления:", "число", 1, Equipment.Count);
+                Equipment.RemoveAt(index - 1);
+                break;
+        }
     }
 }
