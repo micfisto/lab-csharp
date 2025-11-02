@@ -1,73 +1,93 @@
-using System.Collections.Generic;
 using Lab_5.Models;
 
 namespace Lab_5;
 
 public class Airline
 {
-    private List<Plane> planes = new List<Plane>();
+    public static List<Plane> Planes = PlaneFactory.DefaultPlanes();
 
-    public void AddPlane(Plane plane)
+    public static void AddPlane()
     {
-        Console.WriteLine("Выберите тип самолёта:");
+        Console.WriteLine("\nВыберите тип самолёта:");
         Console.WriteLine("1. пассажирский");
         Console.WriteLine("2. грузовой");
         Console.WriteLine("3. санитарный");
         Console.WriteLine("4. сельскохозяйственный");
 
-        while (true)
+        int choice = PlaneHandler.ReadInt("Введите число:", "число", 1, 4);
+
+        Plane plane = null!;
+
+        switch (choice)
         {
-            if (int.TryParse(Console.ReadLine(), out int choice))
-            {
-                switch (choice)
-                {
-                    case 1:
-                        plane = PlaneHandler.CreatePessengerPlane();
-                        break;
-                    case 2:
-                        plane = PlaneHandler.CreateCargoPlane();
-                        break;
-                }
-            }
-            else
-                Console.WriteLine("Некорректный ввод. Введите число из списка.");
+            case 1:
+                plane = PlaneHandler.CreatePassengerPlaneFromConsole();
+                break;
+            case 2:
+                plane = PlaneHandler.CreateCargoPlaneFromConsole();
+                break;
+            case 3:
+                plane = PlaneHandler.CreateAmbulancePlaneFromConsole();
+                break;
+            case 4:
+                plane = PlaneHandler.CreateAgriculturalPlaneFromConsole();
+                break;
         }
 
-        planes.Add(plane);
+        Planes.Add(plane);
         Console.WriteLine($"Самолёт {plane.Model} добавлен в базу авиакомпании.");
     }
 
-    public void RemovePlane(string model)
+    public static void InformationAboutThePlane()
     {
-        Plane? removePlane = planes.Find(plane => plane.Model == model);
-        if (removePlane != null)
+        ShowPlane();
+        int index = PlaneHandler.ReadInt(
+            "Выберите номер самолёта из списка, чтобы получить более подробную информацию о нём", "число", 1,
+            Planes.Count);
+        Console.WriteLine(Planes[index - 1].GetInfo());
+        Console.WriteLine();
+        while (true)
         {
-            planes.Remove(removePlane);
-            Console.WriteLine($"Самолёт {removePlane} удалён из базы авиакомпании.");
-        }
-        else
-        {
-            Console.WriteLine($"Самолёт {removePlane} не найден в базе авиакомпании.");
+            Console.WriteLine("1.Редактировать информацию о самолёте.");
+            Console.WriteLine("2.Удалить данный самолёт.");
+            Console.WriteLine("0.Выйти в главное меню.");
+
+            int choice = PlaneHandler.ReadInt("Введите число", "число", 0, 2);
+            switch (choice)
+            {
+                case 1:
+                    Planes[index].EditInfo();
+                    break;
+                case 2:
+                    Planes.RemoveAt(index);
+                    break;
+                case 3:
+                    return;
+            }
         }
     }
-
-    public void ShowPlane()
+    
+    public static void RemovePlane()
     {
-        if (planes.Count == 0)
+        ShowPlane();
+        int index = PlaneHandler.ReadInt("Введите номер самолёта для удаления", "число", 1, Planes.Count);
+        Planes.RemoveAt(index-1);
+    }
+
+    public static void ShowPlane()
+    {
+        if (Planes.Count == 0)
         {
             Console.WriteLine("В авиакомпании пока нет самолётов.");
             return;
         }
 
         Console.WriteLine("====== СПИСОК САМОЛЁТОВ АВИКОМПАНИИ ======");
-        foreach (var plane in planes)
+        for (int i = 0; i < Planes.Count; i++)
         {
-            Console.WriteLine($"{plane.Model}, {plane.TypeOfPlane}.");
+            Console.WriteLine($"{i + 1}. {Planes[i].Model}, {Planes[i].TypeOfPlane}.");
         }
-    }
 
-    public List<Plane> GetPlane()
-    {
-        return planes;
+        Console.WriteLine();
     }
 }
