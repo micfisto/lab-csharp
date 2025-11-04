@@ -1,15 +1,21 @@
+using System.Xml.Serialization;
+
 namespace Lab_5.Models;
 
+[XmlInclude(typeof(PassengerPlane))]
+[XmlInclude(typeof(CargoPlane))]
+[XmlInclude(typeof(AmbulancePlane))]
+[XmlInclude(typeof(AgriculturalPlane))]
 public abstract class Plane
 {
     //модель
     public string Model { get; set; }
 
     //тип самолёта
-    public string TypeOfPlane { get; protected set; }
+    public string TypeOfPlane { get; set; }
 
     //назначение
-    public string Purpose { get; protected set; }
+    public string Purpose { get; set; }
 
     //количество членов экипажа
     public int NumberOfCrew { get; set; }
@@ -38,6 +44,19 @@ public abstract class Plane
         PassengerCapacity = passengerCapacity;
         Payload = payload;
     }
+    
+    public Plane()
+    {
+        Model = string.Empty;
+        TypeOfPlane = string.Empty;
+        Purpose = string.Empty;
+        NumberOfCrew = 0;
+        FlightRange = 0;
+        FuelConsumption = 0;
+        PassengerCapacity = 0;
+        Payload = 0;
+    }
+    
     public abstract string GetInfo();
 
     public abstract void EditInfo();
@@ -46,4 +65,5 @@ public abstract class Plane
     {
         return GetInfo();
     }
+
 }
