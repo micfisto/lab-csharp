@@ -13,6 +13,8 @@ public class AmbulancePlane : SpecialPlaneBase
             { "медицинский салон", "носилки", "кислород", "аппараты жизнеобеспечения", "санитарная герметизация" };
     }
 
+    public AmbulancePlane() : base() { }
+    
     public override void EditInfo()
     {
         Console.WriteLine($"===== МЕНЮ РЕДАКТИРОВАНИЯ ИНФОРМАЦИИ О САМОЛЁТЕ {Model.ToUpper()}");
@@ -29,59 +31,58 @@ public class AmbulancePlane : SpecialPlaneBase
             Console.WriteLine("8. Наличие оборудования.");
             Console.WriteLine("0. Выход из меню редактирования.");
 
-            int choice = PlaneHandler.ReadInt("Выберите пункт для изменения", "число", 0, 8);
+            var choice = Console.ReadLine();
             switch (choice)
             {
-                case 1:
+                case "1":
                     string model = PlaneHandler.ReadString("Введите модель самолёта", "\"модель\"");
                     Model = model;
                     break;
-                case 2:
+                case "2":
                     int numberOfCrew = PlaneHandler.ReadInt("Введите количество членов экипажа",
                         "данные о количестве членов экипажа", 2, 5);
                     NumberOfCrew = numberOfCrew;
                     break;
-                case 3:
+                case "3":
                     string typeTakeOfAndLanding = PlaneHandler.IsTypeTakeOfAndLanding();
                     TypeTakeOfAndLanding = typeTakeOfAndLanding;
                     break;
-                case 4:
+                case "4":
                     double flightRange = PlaneHandler.ReadDouble("Введите дальность полёта в км",
                         "данные о дальности полёта.", 500, 5000);
                     FlightRange = flightRange;
                     break;
-                case 5:
+                case "5":
                     double fuelConsumption = PlaneHandler.ReadDouble("Введите расход топлива л/ч",
                         "данные о расходе топлива", 300, 2000);
                     FuelConsumption = fuelConsumption;
                     break;
-                case 6:
+                case "6":
                     double payload = PlaneHandler.ReadDouble("Введите грузоподъёмность", "данные о грузоподъёмности",
                         500, 5000);
                     Payload = payload;
                     break;
-                case 7:
+                case "7":
                     int passengerCapacity = PlaneHandler.ReadInt("Введите пассажировместимость",
                         "данные о количестве посадочных мест", 1, 12);
                     PassengerCapacity = passengerCapacity;
                     break;
-                case 8:
-                    int ch;
-                    do
+                case "8":
+                    while (true)
                     {
                         Console.WriteLine("\n1. Добавить оборудование.");
                         Console.WriteLine("2. Удалить оборудование.");
                         Console.WriteLine($"0. Вернуться в общее меню редактирования информации самолёта {Model}.");
-                        
-                        ch = PlaneHandler.ReadInt("Введите число", "число", 0, 2);
+
+                        var ch = Console.ReadLine();
                         switch (ch)
                         {
-                            case 1:
+                            case "1":
                                 AddSpecialEquipment();
                                 break;
-                            case 2:
+                            case "2":
                                 RemoveSpecialEquipment();
-                                
+
                                 if (Equipment.Count == 0)
                                 {
                                     Console.WriteLine("Оборудование не найдено на данном самолёте.");
@@ -91,12 +92,18 @@ public class AmbulancePlane : SpecialPlaneBase
                                 Console.WriteLine(
                                     $"Текущий список оборудования на самолёте: {string.Join(", ", Equipment)}.");
                                 break;
+                            case "0":
+                                return;
+                            default:
+                                Console.WriteLine("Неверный ввод.");
+                                break;
                         }
-                    } while (ch != 0);
-
-                    break;
-                case 0:
+                    }
+                case "0":
                     return;
+                default:
+                    Console.WriteLine("Неверный ввод.");
+                    break;
             }
 
             Console.WriteLine("Информация обновлена.");

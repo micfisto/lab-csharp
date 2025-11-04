@@ -1,12 +1,14 @@
+using System.Xml.Serialization;
 using Lab_5.Interfaces;
 
 namespace Lab_5.Models;
 
 public abstract class SpecialPlaneBase : Plane, ISpecialPlane
 {
-    protected List<string> Equipment;
-    protected string TypeTakeOfAndLanding { get; set; }
+    public List<string> Equipment { get; set; } = new List<string>();
+    public string TypeTakeOfAndLanding { get; set; } = string.Empty;
 
+    [XmlIgnore]
     public static readonly Dictionary<int, string> TakeOffTypes = new()
     {
         { 1, "stol" },
@@ -24,7 +26,9 @@ public abstract class SpecialPlaneBase : Plane, ISpecialPlane
         TypeTakeOfAndLanding = typeTakeOfAndLanding;
         Equipment = new List<string>();
     }
-
+    
+    public SpecialPlaneBase() : base() { }
+    
     public override string GetInfo()
     {
         return
@@ -39,21 +43,22 @@ public abstract class SpecialPlaneBase : Plane, ISpecialPlane
             $"Пассажировместимость: {PassengerCapacity} чел.\n" +
             $"Грузоподъёмность: {Payload} кг\n" +
             $"Оборудование: {string.Join(", ", Equipment)}";
-    }
+    }    
+
 
     public virtual string CanLandOnUnpreparedSurface()
     {
         switch (TypeTakeOfAndLanding)
         {
             case "vtol":
-                return "может. Модель способна взлетать и садиться вертикально.";
+                return "есть. Модель способна взлетать и садиться вертикально.";
             case "stol":
                 return
-                    "может. Модель требует минимальную длину взлётно-посадочной полосы и способна сесть на грунтовое покрытие.";
+                    "есть. Модель требует минимальную длину взлётно-посадочной полосы и способна сесть на грунтовое покрытие.";
             case "обычные(наземные)":
-                return "не может. Модель типа взлетает и садится только на аэродроме";
+                return "отсутствует. Модель типа взлетает и садится только на аэродроме";
             default:
-                return "модель неизвестного типа посадки. Вероятно не может сесть на неподготовленное поле.";
+                return "модель неизвестного типа посадки. Вероятно отсутствует возможность сесть на неподготовленное поле.";
         }
     }
 
@@ -100,21 +105,25 @@ public abstract class SpecialPlaneBase : Plane, ISpecialPlane
 
         Console.WriteLine("1. Удалить всё оборудование.");
         Console.WriteLine("2. Удалить позицию по номеру.");
-        int choice = PlaneHandler.ReadInt("Введите число", "число", 0, 2);
+        var choice = Console.ReadLine();
         switch (choice)
         {
-            case 1:
+            case "1":
                 Equipment.Clear();
                 Console.WriteLine("Было удалено всё оборудование.");
                 break;
-            case 2:
+            case "2":
                 Console.WriteLine("Текущий список оборудования на самолёте:");
                 for (int i = 0; i < Equipment.Count; i++)
                 {
                     Console.WriteLine($"{i + 1}. {Equipment[i]}");
                 }
+
                 int index = PlaneHandler.ReadInt("Введите номер позиции для удаления:", "число", 1, Equipment.Count);
                 Equipment.RemoveAt(index - 1);
+                break;
+            default:
+                Console.WriteLine("Неверный ввод.");
                 break;
         }
     }

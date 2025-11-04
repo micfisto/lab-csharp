@@ -4,8 +4,8 @@ namespace Lab_5.Models;
 
 public class PassengerPlane : Plane, IPassenger
 {
-    public int NumberOfEngines { get; private set; }
-    public string[] ComfortClass { get; private set; }
+    public int NumberOfEngines { get;  set; }
+    public string[] ComfortClass { get; set; } 
 
     public static Dictionary<int, string> AllowedComfortClasses = new()
     {
@@ -27,6 +27,8 @@ public class PassengerPlane : Plane, IPassenger
         ComfortClass = comfortClass;
     }
 
+    public PassengerPlane() : base() { }
+    
     public override string GetInfo()
     {
         return
@@ -59,68 +61,77 @@ public class PassengerPlane : Plane, IPassenger
             Console.WriteLine("8. Классы обслуживания.");
             Console.WriteLine("0. Выход из меню редактирования.");
 
-            int choice = PlaneHandler.ReadInt("Выберите пункт для изменения", "число", 0, 8);
+            var choice = Console.ReadLine();
+
             switch (choice)
             {
-                case 1:
+                case "1":
                     string model = PlaneHandler.ReadString("Введите модель самолёта", "\"модель\"");
                     Model = model;
                     break;
-                case 2:
+                case "2":
                     int numberOfCrew = PlaneHandler.ReadInt("Введите количество членов экипажа",
                         "данные о количестве членов экипажа", 2, 18);
                     NumberOfCrew = numberOfCrew;
                     break;
-                case 3:
+                case "3":
                     double flightRange = PlaneHandler.ReadDouble("Введите дальность полёта в км",
                         "данные о дальности полёта.", 100, 15000);
                     FlightRange = flightRange;
                     break;
-                case 4:
+                case "4":
                     double fuelConsumption = PlaneHandler.ReadDouble("Введите расход топлива л/ч",
                         "данные о расходе топлива", 200, 8000);
                     FuelConsumption = fuelConsumption;
                     break;
-                case 5:
+                case "5":
                     int passengerCapacity = PlaneHandler.ReadInt("Введите пассажировместимость",
                         "данные о количестве посадочных мест", 2, 850);
                     PassengerCapacity = passengerCapacity;
                     break;
-                case 6:
+                case "6":
                     double payload = PlaneHandler.ReadDouble("Введите грузоподъёмность", "данные о грузоподъёмности",
                         100, 200000);
                     Payload = payload;
                     break;
-                case 7:
+                case "7":
                     int numberOfEngines = PlaneHandler.ReadInt("Введите количество двигателей",
                         "данные о количестве двигателей", 1, 4);
                     NumberOfEngines = numberOfEngines;
                     break;
-                case 8:
-                    int ch;
-                    do
+                case "8":
+                    while (true)
                     {
                         Console.WriteLine("\n1. Добавить класс обслуживания.");
                         Console.WriteLine("2. Удалить класс обслуживания.");
                         Console.WriteLine($"0. Вернуться в общее меню редактирования информации самолёта {Model}.");
-                        ch = PlaneHandler.ReadInt("Введите число", "число", 0, 2);
+
+                        var ch = Console.ReadLine();
+
                         switch (ch)
                         {
-                            case 1:
+                            case "1":
                                 AddComfortClasses();
                                 Console.WriteLine(
                                     $"\nТекущий список доступных классов обслуживания в данном самолёте: {string.Join(", ", ComfortClass)}");
                                 break;
-                            case 2:
+                            case "2":
                                 RemoveComfortClass();
                                 Console.WriteLine(
                                     $"\nТекущий список доступных классов обслуживания в данном самолёте: {string.Join(", ", ComfortClass)}");
                                 break;
+                            case "0":
+                                return;
+                            default:
+                                Console.WriteLine("Неверный ввод.");
+                                break;
                         }
-                    } while (ch != 0);
-                    break;
-                case 0:
+                    }
+                case "0":
                     return;
+                default:
+                    Console.WriteLine("Неверный ввод.");
+                    break;
             }
 
             Console.WriteLine("Информация обновлена.");
@@ -143,7 +154,7 @@ public class PassengerPlane : Plane, IPassenger
         var availableClasses = AllowedComfortClasses
             .Where(keyValuePair => !existingClasses.Contains(keyValuePair.Value))
             .ToDictionary(keyValuePair => keyValuePair.Key, keyValuePair => keyValuePair.Value);
-        
+
         if (availableClasses.Count == 0)
         {
             Console.WriteLine("Все доступные классы уже добавлены.");
@@ -171,7 +182,7 @@ public class PassengerPlane : Plane, IPassenger
             .Select(key => availableClasses[key]);
 
         ComfortClass = existingClasses.Concat(newComfortClasses).ToArray();
-        
+
         Console.WriteLine("Добавлено.");
     }
 
