@@ -19,9 +19,7 @@ public class PlaneHandler
             "данные о количестве посадочных мест", 2, 850);
         double payload = ReadDouble("Введите грузоподъёмность", "данные о грузоподъёмности", 100, 200000);
         int numberOfEngines = ReadInt("Введите количество двигателей", "данные о количестве двигателей", 1, 4);
-        string[] comfortClass = ReadStringArray(
-            "Введите классы обслуживания через запятую(эконом,комфорт,бизнес):",
-            "\"класс обслуживания\"");
+        string[] comfortClass = Array.Empty<string>();
 
         PassengerPlane plane = PlaneFactory.CreatePassengerPlane(
             model,
@@ -33,6 +31,8 @@ public class PlaneHandler
             numberOfEngines,
             comfortClass);
 
+        plane.AddComfortClasses();
+        
         Console.WriteLine($"Пассажирский самолёт {plane.Model} успешно создан и добавлен в базу авиакомпании.");
         return plane;
     }
@@ -119,7 +119,7 @@ public class PlaneHandler
         return plane;
     }
 
-    static string IsTypeTakeOfAndLanding()
+    public static string IsTypeTakeOfAndLanding()
     {
         while (true)
         {
@@ -156,7 +156,7 @@ public class PlaneHandler
                 string? input = Console.ReadLine();
                 if (!string.IsNullOrWhiteSpace(input))
                     return input.Split(",", StringSplitOptions.RemoveEmptyEntries)
-                        .Select(str => str.Trim()).ToArray();
+                        .Select(str => str.Trim().ToLower()).Distinct().ToArray();
                 Console.WriteLine($"Ошибка: поле {errorMessage} не может быть пустым.");
             }
         }
