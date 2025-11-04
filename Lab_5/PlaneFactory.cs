@@ -64,13 +64,12 @@ public static class PlaneFactory
                 payload: 2500
             ),
 
-            new AmbulancePlane(
+            new AgriculturalPlane(
                 model: "Air Tractor AT-502B",
                 numberOfCrew: 1,
                 typeTakeOfAndLanding: "stol",
                 flightRange: 700,
                 fuelConsumption: 500,
-                passengerCapacity: 0,
                 payload: 2800
             ),
             new AgriculturalPlane(
