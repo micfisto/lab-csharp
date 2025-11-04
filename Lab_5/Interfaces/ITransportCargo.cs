@@ -1,6 +1,6 @@
 namespace Lab_5.Interfaces;
 
-public interface ITransoptCargo
+public interface ITransportCargo
 {
     void LoadCargo(double loadWeightCargo);
 
