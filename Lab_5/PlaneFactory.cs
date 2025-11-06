@@ -4,7 +4,7 @@ namespace Lab_5;
 
 public static class PlaneFactory
 {
-        public static List<Plane> DefaultPlanes()
+    public static List<Plane> DefaultPlanes1()
     {
         return new List<Plane>
         {
@@ -82,7 +82,48 @@ public static class PlaneFactory
             )
         };
     }
-    
+
+    public static List<Plane> DefaultPlanes2()
+    {
+        return new List<Plane>
+        {
+            new PassengerPlane(
+                model: "Airbus A320",
+                numberOfCrew: 5,
+                flightRange: 3000,
+                fuelConsumption: 2400,
+                passengerCapacity: 150,
+                payload: 18000,
+                numberOfEngines: 2,
+                comfortClass: new[] { "эконом", "бизнес" }
+            ),
+            new CargoPlane(
+                model: "Boeing 747-8F",
+                numberOfCrew: 6,
+                flightRange: 7600,
+                fuelConsumption: 11000,
+                payload: 137000,
+                presenceOfRamp: true),
+            new AmbulancePlane(
+                model:"Dassault Falcon 900 MedEvac",
+                numberOfCrew:3,
+                typeTakeOfAndLanding:"обычные(наземные)",
+                flightRange:4500,
+                fuelConsumption:2000,
+                passengerCapacity:6,
+                payload:3000),
+            new AgriculturalPlane(
+                model:"PZL-Mielec M-18 Dromader",
+                numberOfCrew:1,
+                typeTakeOfAndLanding:"stol",
+                flightRange:800,
+                fuelConsumption:550,
+                payload:2500
+                )
+        };
+    }
+
+
     public static PassengerPlane CreatePassengerPlane(string model,
         int numberOfCrew,
         double flightRange,
@@ -136,7 +177,7 @@ public static class PlaneFactory
             passengerCapacity,
             payload);
     }
-    
+
     public static AgriculturalPlane CreateAgriculturalPlane(string model,
         int numberOfCrew,
         string typeTakeOfAndLanding,

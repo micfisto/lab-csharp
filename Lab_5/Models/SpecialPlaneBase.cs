@@ -45,7 +45,6 @@ public abstract class SpecialPlaneBase : Plane, ISpecialPlane
             $"Оборудование: {string.Join(", ", Equipment)}";
     }    
 
-
     public virtual string CanLandOnUnpreparedSurface()
     {
         switch (TypeTakeOfAndLanding)

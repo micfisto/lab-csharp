@@ -6,7 +6,7 @@ static class Program
 {
     static void Main()
     {
-        Airline start = new Airline();
+        AirlineService start = new AirlineService();
         start.Menu();
     }
 }

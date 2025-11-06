@@ -2,6 +2,7 @@ using System.Xml.Serialization;
 
 namespace Lab_5.Models;
 
+[Serializable]
 [XmlInclude(typeof(PassengerPlane))]
 [XmlInclude(typeof(CargoPlane))]
 [XmlInclude(typeof(AmbulancePlane))]

@@ -16,7 +16,7 @@ public class PassengerPlane : Plane, IPassenger
 
     public PassengerPlane
     (
-        string model, int numberOfCrew,
+        string model, int numberOfCrew,  
         double flightRange, double fuelConsumption,
         int passengerCapacity, double payload, int numberOfEngines, string[] comfortClass) : base(
         model, typeOfPlane: "пассажирский", purpose: "перевозка пассажиров и их багажа", numberOfCrew: numberOfCrew,
